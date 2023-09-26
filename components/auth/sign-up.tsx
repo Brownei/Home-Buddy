@@ -18,6 +18,7 @@ export default function SignUp() {
           </p>
         </div>
         <div className="grid gap-8">
+          {/* USER SIGNUP FORMS  */}
           <div className="w-full mt-10 grid gap-4">
             <TextInput
               label="Full Name"
@@ -48,6 +49,8 @@ export default function SignUp() {
             />
             <AuthButton text="Get Started" />
           </div>
+
+          {/* GOOGLE AND FACEBOOK AUTH  */}
           <div className=" grid gap-4">
             <div className="relative flex items-center justify-center ">
               <Image

@@ -17,6 +17,7 @@ export default function SignIn() {
         </div>
         <div className="grid gap-8">
           <div className="w-full mt-10 grid gap-4">
+            {/* USER LOGIN FORM  */}
             <TextInput
               label="Email"
               placeholder="Enter your email"
@@ -37,6 +38,7 @@ export default function SignIn() {
             />
             <AuthButton text="Get Started" />
           </div>
+          {/* GOOGLE AND FACEBOOK AUTH  */}
           <div className=" grid gap-4">
             <div className="relative flex items-center justify-center ">
               <Image
