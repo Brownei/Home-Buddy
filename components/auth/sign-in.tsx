@@ -16,8 +16,8 @@ export default function SignIn() {
           <p className="text-[#828282]">Welcome back!</p>
         </div>
         <div className="grid gap-8">
+          {/* USER LOGIN FORM  */}
           <div className="w-full mt-10 grid gap-4">
-            {/* USER LOGIN FORM  */}
             <TextInput
               label="Email"
               placeholder="Enter your email"
@@ -38,36 +38,30 @@ export default function SignIn() {
             />
             <AuthButton text="Get Started" />
           </div>
-          {/* GOOGLE AND FACEBOOK AUTH  */}
+
+          {/* FACEBOOK AND GOOGLE AUTH  */}
           <div className=" grid gap-4">
-            <div className="relative flex items-center justify-center ">
-              <Image
-                src={"/google.svg"}
-                className="absolute left-[150px] z-40"
-                alt="GOOGLE"
-                width={32}
-                height={32}
-              />
+            <div className=" flex items-center justify-center ">
               <Button
                 size="md"
-                className=" border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center gap-2"
+                className="border border-[#E0E0E0] bg-white hover:bg-[#f5f5f5] text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center "
               >
-                Sign up with Google
+                <Image
+                  src={"/google.svg"}
+                  alt="GOOGLE"
+                  width={32}
+                  height={32}
+                />
+                <p className="ms-2">Sign up with Google</p>
               </Button>
             </div>
-            <div className="relative flex items-center justify-center ">
-              <Image
-                src={"/fb.svg"}
-                className="absolute left-[140px] z-40"
-                alt="FACEBOOK"
-                width={32}
-                height={32}
-              />
+            <div className=" flex items-center justify-center ">
               <Button
                 size="md"
                 className=" border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center gap-2"
               >
-                Sign up with Facebook
+                <Image src={"/fb.svg"} alt="FACEBOOK" width={32} height={32} />
+                <p className="ms-2">Sign up with Facebook</p>
               </Button>
             </div>
           </div>
