@@ -16,7 +16,7 @@ const config: Config = {
       md: { max: "700px" },
       cmd: { max: "631px" },
       mcmd: { min: "630px" },
-      gsm: { max: "500px" },
+      gsm: { max: "586px" },
       csm: { max: "425px" },
       sm: { max: "320px" },
     },
