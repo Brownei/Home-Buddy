@@ -62,7 +62,7 @@ export default function SignIn() {
         <div className=" grid gap-4">
           <div className="relative flex items-center justify-center ">
             <Button
-              onClick={() => signIn("google")}
+              onClick={() => signIn('google')}
               size="md"
               className="border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center gap-4"
             >
@@ -79,7 +79,7 @@ export default function SignIn() {
           </div>
           <div className="relative flex items-center justify-center ">
             <Button
-              onClick={() => signIn("facebook")}
+              onClick={() => signIn('facebook')}
               size="md"
               className=" border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center gap-4"
             >
