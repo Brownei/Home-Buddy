@@ -2,14 +2,15 @@
 import type { Session, User } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 import { Roles } from "@prisma/client";
+import { ResponseCookies } from "next/dist/compiled/@edge-runtime/cookies";
 
-type UserId = string 
-
+type UserId = string
 
 declare module 'next-auth/jwt' {
     interface JWT {
         id: UserId
         role: Roles
+        cookies: ResponseCookies
     }
 }
 
@@ -18,6 +19,7 @@ declare module 'next-auth' {
         user: User & {
             id: UserId
             role: Roles
+            cookies: ResponseCookies
         }
     }
 }

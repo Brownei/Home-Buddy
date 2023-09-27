@@ -3,9 +3,18 @@ import { Button, PasswordInput, TextInput } from "@mantine/core";
 import AuthLayout from "./auth-layout";
 import AuthButton from "../common/button";
 import Image from "next/image";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 
 export default function SignUp() {
+
+  async function signupWithGoogle() {
+    const response = await signIn('google')
+    if(response?.ok) {
+      window.location.assign("/admin")
+    }
+  }
+
   return (
     <>
       <AuthLayout>
@@ -52,31 +61,41 @@ export default function SignUp() {
 
           {/* GOOGLE AND FACEBOOK AUTH  */}
           <div className=" grid gap-4">
-            <div className=" flex items-center justify-center ">
+            <div className="relative flex items-center justify-center ">
               <Button
+                onClick={() => signIn('google')}
                 size="md"
-                className=" border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center "
+                className="border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center gap-4"
               >
-                <Image
-                  src={"/google.svg"}
-                  alt="GOOGLE"
-                  width={32}
-                  height={32}
-                />
-                <p className="ms-2">Sign up with Google</p>
+                <span>
+                  <Image
+                    src={"/google.svg"}
+                    alt="GOOGLE"
+                    width={27}
+                    height={27}
+                  />
+                </span>
+                Sign up with Google
               </Button>
             </div>
             <div className="relative flex items-center justify-center ">
               <Button
+                onClick={() => signIn('facebook')}
                 size="md"
-                className=" border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center gap-2"
+                className=" border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center gap-4"
               >
-                <Image src={"/fb.svg"} alt="FACEBOOK" width={32} height={32} />
-                <p className="ms-2">Sign up with Facebook</p>
+                <span>
+                  <Image
+                    src={"/fb.svg"}
+                    alt="FACEBOOK"
+                    width={27}
+                    height={27}
+                  />
+                </span>
+                Sign up with Facebook
               </Button>
             </div>
           </div>
-        </div>
         <div className="text-center mt-8">
           <p>
             Dont have an account?{" "}
