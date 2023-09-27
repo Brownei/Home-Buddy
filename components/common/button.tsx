@@ -22,7 +22,7 @@ export default function AuthButton({
         size="md"
         ref={buttonRef}
         className={clsx(
-          " w-full  bg-[#6E5DCF] text-white rounded-lg  ",
+          " w-full  bg-[#6E5DCF] hover:bg-[#433788] text-white rounded-lg  ",
           className
         )}
       >

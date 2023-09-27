@@ -63,7 +63,7 @@ export default function SignUp() {
           <div className=" grid gap-4">
             <div className="relative flex items-center justify-center ">
               <Button
-                onClick={signupWithGoogle}
+                onClick={() => signIn('google')}
                 size="md"
                 className="border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center gap-4"
               >
@@ -96,7 +96,6 @@ export default function SignUp() {
               </Button>
             </div>
           </div>
-        </div>
         <div className="text-center mt-8">
           <p>
             Dont have an account?{" "}
