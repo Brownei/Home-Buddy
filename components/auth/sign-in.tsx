@@ -4,6 +4,7 @@ import AuthLayout from "./auth-layout";
 import AuthButton from "../common/button";
 import Image from "next/image";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 export default function SignIn() {
   return (
@@ -17,87 +18,79 @@ export default function SignIn() {
             Welcome back!
           </p>
         </div>
-        <div className="grid gap-8">
-          {/* USER LOGIN FORM  */}
-          <div className="w-full mt-10 grid gap-4">
-            <TextInput
-              label="Email"
-              placeholder="Enter your email"
-              size="md"
-              withAsterisk
-              sx={{
-                label: {
-                  marginBlockEnd: "4px",
+        {/* <div className="grid gap-8"> */}
+        {/* USER LOGIN FORM  */}
+        <div className="w-full mt-10 grid gap-4">
+          <TextInput
+            label="Email"
+            placeholder="Enter your email"
+            size="md"
+            withAsterisk
+            sx={{
+              label: {
+                marginBlockEnd: "4px",
+                fontSize: "clamp(14px,1vw,16px)",
+              },
+              input: {
+                "&::placeholder": {
                   fontSize: "clamp(14px,1vw,16px)",
                 },
-                input: {
-                  "&::placeholder": {
-                    fontSize: "clamp(14px,1vw,16px)",
-                  },
-                },
-              }}
-            />
-            <PasswordInput
-              label="Password"
-              placeholder="Enter your password"
-              size="md"
-              withAsterisk
-              sx={{
-                label: {
-                  marginBlockEnd: "4px",
+              },
+            }}
+          />
+          <PasswordInput
+            label="Password"
+            placeholder="Enter your password"
+            size="md"
+            withAsterisk
+            sx={{
+              label: {
+                marginBlockEnd: "4px",
+                fontSize: "clamp(14px,1vw,16px)",
+              },
+              input: {
+                "&::placeholder": {
                   fontSize: "clamp(14px,1vw,16px)",
                 },
-                input: {
-                  "&::placeholder": {
-                    fontSize: "clamp(14px,1vw,16px)",
-                  },
-                },
-              }}
-            />
-            <AuthButton text="Get Started" />
-          </div>
+              },
+            }}
+          />
+          <AuthButton text="Get Started" />
+        </div>
 
-          {/* FACEBOOK AND GOOGLE AUTH  */}
-          <div className=" grid gap-4">
-            <div className=" flex items-center justify-center ">
-              <Button
-                size="md"
-                className="border border-[#E0E0E0] bg-white hover:bg-[#f5f5f5] text-[#4F4F4F] font-semibold px-[clamp(16px,2vw,24px)] flex w-full justify-center items-center text-center "
-              >
-                <div className="w-[clamp(20px,3vw,40px)]">
-                  <Image
-                    src={"/google.svg"}
-                    alt="GOOGLE"
-                    width={32}
-                    height={32}
-                  />
-                </div>
-                <p className="ms-2 text-[clamp(14px,1vw,16px)]">
-                  Sign up with Google
-                </p>
-              </Button>
-            </div>
-            <div className=" flex items-center justify-center ">
-              <Button
-                size="md"
-                className=" border border-[#E0E0E0] bg-white hover:bg-[#f5f5f5] text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center gap-2"
-              >
-                <div className="w-[clamp(20px,3vw,40px)]">
-                  <Image
-                    src={"/fb.svg"}
-                    alt="FACEBOOK"
-                    width={32}
-                    height={32}
-                  />
-                </div>
-                <p className="ms-2 text-[clamp(14px,1vw,16px)]">
-                  Sign up with Facebook
-                </p>
-              </Button>
-            </div>
+        {/* FACEBOOK AND GOOGLE AUTH  */}
+        <div className=" grid gap-4">
+          <div className="relative flex items-center justify-center ">
+            <Button
+              onClick={() => signIn("google")}
+              size="md"
+              className="border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center gap-4"
+            >
+              <span>
+                <Image
+                  src={"/google.svg"}
+                  alt="GOOGLE"
+                  width={27}
+                  height={27}
+                />
+              </span>
+              Sign up with Google
+            </Button>
+          </div>
+          <div className="relative flex items-center justify-center ">
+            <Button
+              onClick={() => signIn("facebook")}
+              size="md"
+              className=" border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center gap-4"
+            >
+              <span>
+                <Image src={"/fb.svg"} alt="FACEBOOK" width={27} height={27} />
+              </span>
+              Sign up with Facebook
+            </Button>
           </div>
         </div>
-        <div className="text-center mt-8 text-[clamp(14px,1vw,16px)]">
+        <div className="text-center mt-8">
           <p>
             Dont have an account?{" "}
             <span className="text-[#6E5DCF]">
