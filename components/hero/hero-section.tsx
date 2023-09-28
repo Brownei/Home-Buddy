@@ -61,9 +61,8 @@ export default function HeroSection() {
           {/* hero filter section  */}
           <div className="mt-[clamp(16px,2vw,32px)] gap-4 flex-wrap flex ">
             {filterItem.map((item) => (
-              <div className="bg-gray-100 p-4 min-w-[200px] gsm:w-full  w-[25%]">
+              <div className="bg-gray-100 p-4 min-w-[200px] gsm:w-full  w-[25%]" key={item.id}>
                 <Select
-                  key={item.id}
                   label={item.title}
                   placeholder={item.id}
                   data={[

@@ -5,8 +5,40 @@ import AuthButton from "../common/button";
 import Image from "next/image";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { useRef, useState, useTransition } from "react";
+import axios, { AxiosError } from "axios";
+
 
 export default function SignIn() {
+  const emailRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
+  const [isLoading, setIsLoading] = useState(false)
+
+  async function login() {
+    const email = emailRef.current?.value
+    const password = passwordRef.current?.value
+    setIsLoading(prev => !prev)
+    try {
+      const response = await axios.post('/api/auth/login', {
+        email,
+        password
+      })
+  
+      if(!response.data) {
+        console.log('Error!!!')
+      }
+      console.log('Logged In!')
+      window.location.assign('/admin')
+    } catch (error) {
+      console.log(error)
+      if(error instanceof AxiosError) {
+        console.log(error.response?.data)
+      }
+    } finally {
+      setIsLoading(prev => !prev)
+    }
+}
+
   return (
     <>
       <AuthLayout>
@@ -18,87 +50,80 @@ export default function SignIn() {
             Welcome back!
           </p>
         </div>
-        <div className="grid gap-8">
-          {/* USER LOGIN FORM  */}
-          <div className="w-full mt-10 grid gap-4">
-            <TextInput
-              label="Email"
-              placeholder="Enter your email"
-              size="md"
-              withAsterisk
-              sx={{
-                label: {
-                  marginBlockEnd: "4px",
+        {/* <div className="grid gap-8"> */}
+        {/* USER LOGIN FORM  */}
+        <div className="w-full mt-10 grid gap-4">
+          <TextInput
+            ref={emailRef}
+            label="Email"
+            placeholder="Enter your email"
+            size="md"
+            withAsterisk
+            sx={{
+              label: {
+                marginBlockEnd: "4px",
+                fontSize: "clamp(14px,1vw,16px)",
+              },
+              input: {
+                "&::placeholder": {
                   fontSize: "clamp(14px,1vw,16px)",
                 },
-                input: {
-                  "&::placeholder": {
-                    fontSize: "clamp(14px,1vw,16px)",
-                  },
-                },
-              }}
-            />
-            <PasswordInput
-              label="Password"
-              placeholder="Enter your password"
-              size="md"
-              withAsterisk
-              sx={{
-                label: {
-                  marginBlockEnd: "4px",
+              },
+            }}
+          />
+          <PasswordInput
+            ref={passwordRef}
+            label="Password"
+            placeholder="Enter your password"
+            size="md"
+            withAsterisk
+            sx={{
+              label: {
+                marginBlockEnd: "4px",
+                fontSize: "clamp(14px,1vw,16px)",
+              },
+              input: {
+                "&::placeholder": {
                   fontSize: "clamp(14px,1vw,16px)",
                 },
-                input: {
-                  "&::placeholder": {
-                    fontSize: "clamp(14px,1vw,16px)",
-                  },
-                },
-              }}
-            />
-            <Link href={"/"}>
-              <AuthButton text="Login" />
-            </Link>
-          </div>
-
-          {/* FACEBOOK AND GOOGLE AUTH  */}
-          <div className=" grid gap-4">
-            <div className="relative flex items-center justify-center ">
-              <Button
-                onClick={() => signIn("google")}
-                size="md"
-                className="border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center gap-4"
-              >
-                <span className="me-1">
-                  <Image
-                    src={"/google.svg"}
-                    alt="GOOGLE"
-                    width={27}
-                    height={27}
-                  />
-                </span>
-                Sign up with Google
-              </Button>
-            </div>
-            <div className="relative flex items-center justify-center ">
-              <Button
-                onClick={() => signIn("facebook")}
-                size="md"
-                className=" border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center gap-4"
-              >
-                <span className="me-1">
-                  <Image
-                    src={"/fb.svg"}
-                    alt="FACEBOOK"
-                    width={27}
-                    height={27}
-                  />
-                </span>
-                Sign up with Facebook
-              </Button>
-            </div>
-          </div>
+              },
+            }}
+          />
+          <AuthButton disabled={isLoading} onClick={login} text="Get Started" />
         </div>
 
+        {/* FACEBOOK AND GOOGLE AUTH  */}
+        <div className=" grid gap-4">
+          <div className="relative flex items-center justify-center ">
+            <Button
+              onClick={() => signIn('google')}
+              size="md"
+              className="border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center gap-4"
+            >
+              <span>
+                <Image
+                  src={"/google.svg"}
+                  alt="GOOGLE"
+                  width={27}
+                  height={27}
+                />
+              </span>
+              Sign up with Google
+            </Button>
+          </div>
+          <div className="relative flex items-center justify-center ">
+            <Button
+              onClick={() => signIn('facebook')}
+              size="md"
+              className=" border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center gap-4"
+            >
+              <span>
+                <Image src={"/fb.svg"} alt="FACEBOOK" width={27} height={27} />
+              </span>
+              Sign up with Facebook
+            </Button>
+          </div>
+        </div>
         <div className="text-center mt-8">
           <p>
             Dont have an account?{" "}
