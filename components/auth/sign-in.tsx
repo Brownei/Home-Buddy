@@ -97,46 +97,19 @@ export default function SignIn() {
           <div className="relative flex items-center justify-center ">
             <Button
               onClick={() => signIn('google')}
-        <div className="grid gap-8">
-          {/* USER LOGIN FORM  */}
-          <div className="w-full mt-10 grid gap-4">
-            <TextInput
-              label="Email"
-              placeholder="Enter your email"
               size="md"
-              withAsterisk
-              sx={{
-                label: {
-                  marginBlockEnd: "4px",
-                  fontSize: "clamp(14px,1vw,16px)",
-                },
-                input: {
-                  "&::placeholder": {
-                    fontSize: "clamp(14px,1vw,16px)",
-                  },
-                },
-              }}
-            />
-            <PasswordInput
-              label="Password"
-              placeholder="Enter your password"
-              size="md"
-              withAsterisk
-              sx={{
-                label: {
-                  marginBlockEnd: "4px",
-                  fontSize: "clamp(14px,1vw,16px)",
-                },
-                input: {
-                  "&::placeholder": {
-                    fontSize: "clamp(14px,1vw,16px)",
-                  },
-                },
-              }}
-            />
-            <Link href={"/"}>
-              <AuthButton text="Login" />
-            </Link>
+              className="border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center gap-4"
+            >
+              <span>
+                <Image
+                  src={"/google.svg"}
+                  alt="GOOGLE"
+                  width={27}
+                  height={27}
+                />
+              </span>
+              Sign up with Google
+            </Button>
           </div>
           <div className="relative flex items-center justify-center ">
             <Button
@@ -149,46 +122,8 @@ export default function SignIn() {
               </span>
               Sign up with Facebook
             </Button>
-
-          {/* FACEBOOK AND GOOGLE AUTH  */}
-          <div className=" grid gap-4">
-            <div className="relative flex items-center justify-center ">
-              <Button
-                onClick={() => signIn("google")}
-                size="md"
-                className="border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center gap-4"
-              >
-                <span className="me-1">
-                  <Image
-                    src={"/google.svg"}
-                    alt="GOOGLE"
-                    width={27}
-                    height={27}
-                  />
-                </span>
-                Sign up with Google
-              </Button>
-            </div>
-            <div className="relative flex items-center justify-center ">
-              <Button
-                onClick={() => signIn("facebook")}
-                size="md"
-                className=" border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center gap-4"
-              >
-                <span className="me-1">
-                  <Image
-                    src={"/fb.svg"}
-                    alt="FACEBOOK"
-                    width={27}
-                    height={27}
-                  />
-                </span>
-                Sign up with Facebook
-              </Button>
-            </div>
           </div>
         </div>
-
         <div className="text-center mt-8">
           <p>
             Dont have an account?{" "}
