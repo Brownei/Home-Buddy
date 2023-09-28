@@ -55,12 +55,16 @@ export default function Navbar() {
           ))}
         </ul>
         <div className="md:hidden flex gap-[clamp(12px,2vw,24px)]">
-          <Button className="bg-[#8072CF] hover:bg-[#433788] ">
-            Get Started
-          </Button>
-          <Button className="border border-[#8072CF] hover:bg-white hover:border-2 hover:border-[#433788] bg-white text-[#8072CF]">
-            Log in
-          </Button>
+          <Link href={"/get-started"}>
+            <Button className="bg-[#8072CF] hover:bg-[#433788] text-[clamp(14px,2vw,18px)] ">
+              Get Started
+            </Button>
+          </Link>
+          <Link href={"/login"}>
+            <Button className="text-[clamp(14px,2vw,18px)] border border-[#8072CF] hover:text-[#433788] hover:bg-white hover:border-2 hover:border-[#433788] bg-white text-[#8072CF]">
+              Log in
+            </Button>
+          </Link>
         </div>
         <div className="hidden md:flex">
           <Drawer position="right" size={"50%"} opened={opened} onClose={close}>

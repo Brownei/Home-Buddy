@@ -21,10 +21,29 @@ const filterItem = [
   },
 ];
 
+const heroStat = [
+  {
+    id: "1",
+    figure: "150",
+    text: "Award Winning",
+  },
+  {
+    id: "2",
+    figure: "250",
+    symbol: "+",
+    text: "Happy Customers",
+  },
+  {
+    id: "3",
+    figure: "500",
+    symbol: "+",
+    text: "Property Ready",
+  },
+];
 export default function HeroSection() {
   return (
     <>
-      <div className="  bg-[url('/herobg.svg')]  bg-no-repeat bg-contain  bg-right-top px-[clamp(24px,5vw,60px)]  max-w-[1440px] mx-auto">
+      <div className="  bg-[url('/herobg.svg')] min-h-max bg-no-repeat bg-contain md:bg-cover  bg-right-top px-[clamp(24px,5vw,60px)] py-6  max-w-[1440px] mx-auto">
         {/* <div className=""> */}
         <div className="w-[60%] clg:w-[80%] gsm:w-full  ">
           {/* hero heading  */}
@@ -39,6 +58,7 @@ export default function HeroSection() {
               aspirations.
             </p>
           </div>
+          {/* hero filter section  */}
           <div className="mt-[clamp(16px,2vw,32px)] gap-4 flex-wrap flex ">
             {filterItem.map((item) => (
               <div className="bg-gray-100 p-4 min-w-[200px] gsm:w-full  w-[25%]">
@@ -63,7 +83,7 @@ export default function HeroSection() {
               </div>
             ))}
             <div className="bg-red !w-[100px] gsm:!w-full flex items-end  p-4 ">
-              <Button className="w-full bg-red-200 justify-end">
+              <Button className="w-full bg-[#8072CF] hover:bg-[#433788]  justify-end">
                 <Image
                   src={"/search.svg"}
                   alt="search"
@@ -73,9 +93,25 @@ export default function HeroSection() {
               </Button>
             </div>
           </div>
+          {/* hero stat  */}
+          <div className="flex gap-[clamp(1rem,4vw,4rem)]  mt-8 md:bg-white rounded-2xl px-2 py-3 ">
+            {heroStat.map((item) => (
+              <div
+                key={item.id}
+                className="flex flex-col justify-center  items-center"
+              >
+                <h2 className="text-[clamp(22px,2vw,32px)] font-bold">
+                  {item.figure}
+                  <span className="text-[#6E5DCF]">{item.symbol}</span>
+                </h2>
+                <p className="text-[clamp(14px,1vw,16px)] text-[#8D8D8D] text-center">
+                  {item.text}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-      {/* </div> */}
     </>
   );
 }

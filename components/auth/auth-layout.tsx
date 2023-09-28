@@ -8,7 +8,7 @@ interface AuthLayoutProp {
 export default function AuthLayout({ children }: AuthLayoutProp) {
   return (
     <div className=" bg-[url('/authbgcolor.svg')]  bg-no-repeat bg-cover ">
-      <div className="min-h-screen  max-w-[1440px] mx-auto  px-[clamp(24px,5vw,60px)] py-10">
+      <div className="min-h-screen  max-w-[1440px] mx-auto  px-[clamp(24px,5vw,60px)] pt-10">
         <div className="flex gap-3 items-center text-white">
           <div className="w-[clamp(28px,3vw,40px)] ">
             <Image src={"/homebuddy.svg"} alt="LOGO" width={40} height={40} />
