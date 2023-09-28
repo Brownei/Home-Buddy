@@ -5,12 +5,37 @@ import AuthButton from "../common/button";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { useRef } from "react";
+import axios, { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 
 export default function SignUp() {
-  async function signupWithGoogle() {
-    const response = await signIn("google");
-    if (response?.ok) {
-      window.location.assign("/admin");
+  const nameRef = useRef<HTMLInputElement>(null)
+  const emailRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
+  const router = useRouter()
+
+  async function createAccount() {
+    const name = nameRef.current?.value
+    const email = emailRef.current?.value
+    const password = passwordRef.current?.value
+
+    try {
+      const response = await axios.post('/api/auth/client', {
+        fullName: name,
+        email,
+        password
+      });
+  
+      if (response.data) {
+        console.log(response.data)
+        router.push("/login");
+      }
+    } catch (error) {
+      console.log(error)
+      if(error instanceof AxiosError) {
+        console.log(error.response?.data)
+      }
     }
   }
 
@@ -29,6 +54,7 @@ export default function SignUp() {
         {/* USER SIGNUP FORMS  */}
         <div className="w-full mt-10 grid gap-4">
           <TextInput
+            ref={nameRef}
             label="Full Name"
             placeholder="Enter your full name"
             size="md"
@@ -47,6 +73,7 @@ export default function SignUp() {
             }}
           />
           <TextInput
+            ref={emailRef}
             label="Email"
             placeholder="Enter your email"
             size="md"
@@ -64,6 +91,7 @@ export default function SignUp() {
             }}
           />
           <PasswordInput
+            ref={passwordRef}
             label="Password"
             placeholder="Enter your password"
             size="md"
@@ -72,7 +100,7 @@ export default function SignUp() {
               label: { marginBlockEnd: "4px" },
             }}
           />
-          <AuthButton text="Get Started" />
+          <AuthButton onClick={createAccount} text="Get Started" />
         </div>
 
         {/* GOOGLE AND FACEBOOK AUTH  */}

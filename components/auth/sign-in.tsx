@@ -5,8 +5,40 @@ import AuthButton from "../common/button";
 import Image from "next/image";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { useRef, useState, useTransition } from "react";
+import axios, { AxiosError } from "axios";
+
 
 export default function SignIn() {
+  const emailRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
+  const [isLoading, setIsLoading] = useState(false)
+
+  async function login() {
+    const email = emailRef.current?.value
+    const password = passwordRef.current?.value
+    setIsLoading(prev => !prev)
+    try {
+      const response = await axios.post('/api/auth/login', {
+        email,
+        password
+      })
+  
+      if(!response.data) {
+        console.log('Error!!!')
+      }
+      console.log('Logged In!')
+      window.location.assign('/admin')
+    } catch (error) {
+      console.log(error)
+      if(error instanceof AxiosError) {
+        console.log(error.response?.data)
+      }
+    } finally {
+      setIsLoading(prev => !prev)
+    }
+}
+
   return (
     <>
       <AuthLayout>
@@ -22,6 +54,7 @@ export default function SignIn() {
         {/* USER LOGIN FORM  */}
         <div className="w-full mt-10 grid gap-4">
           <TextInput
+            ref={emailRef}
             label="Email"
             placeholder="Enter your email"
             size="md"
@@ -39,6 +72,7 @@ export default function SignIn() {
             }}
           />
           <PasswordInput
+            ref={passwordRef}
             label="Password"
             placeholder="Enter your password"
             size="md"
@@ -55,7 +89,7 @@ export default function SignIn() {
               },
             }}
           />
-          <AuthButton text="Get Started" />
+          <AuthButton disabled={isLoading} onClick={login} text="Get Started" />
         </div>
 
         {/* FACEBOOK AND GOOGLE AUTH  */}
