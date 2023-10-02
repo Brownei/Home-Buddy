@@ -5,39 +5,25 @@ import AuthButton from "../common/button";
 import Image from "next/image";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import { useRef, useState, useTransition } from "react";
-import axios, { AxiosError } from "axios";
-
+import { useForm, yupResolver } from "@mantine/form";
+import { useMutation } from "@tanstack/react-query";
+import * as yup from "yup";
+import { useRouter } from "next/navigation";
 
 export default function SignIn() {
-  const emailRef = useRef<HTMLInputElement>(null)
-  const passwordRef = useRef<HTMLInputElement>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const { push } = useRouter();
 
-  async function login() {
-    const email = emailRef.current?.value
-    const password = passwordRef.current?.value
-    setIsLoading(prev => !prev)
-    try {
-      const response = await axios.post('/api/auth/login', {
-        email,
-        password
-      })
-  
-      if(!response.data) {
-        console.log('Error!!!')
-      }
-      console.log('Logged In!')
-      window.location.assign('/admin')
-    } catch (error) {
-      console.log(error)
-      if(error instanceof AxiosError) {
-        console.log(error.response?.data)
-      }
-    } finally {
-      setIsLoading(prev => !prev)
-    }
-}
+  const schema = yup.object().shape({
+    email: yup.string().email("Invalid email").required("email is required"),
+    password: yup
+      .string()
+      .matches(
+        /^[a-zA-Z0-9]+$/,
+        "Password must contain text and number characters"
+      )
+      .min(6, "Password must be at least 6 characters long")
+      .required("Password is required"),
+  });
 
   return (
     <>
@@ -50,7 +36,6 @@ export default function SignIn() {
             Welcome back!
           </p>
         </div>
-        {/* <div className="grid gap-8"> */}
         {/* USER LOGIN FORM  */}
         <div className="w-full mt-10 grid gap-4">
           <TextInput
@@ -89,14 +74,14 @@ export default function SignIn() {
               },
             }}
           />
-          <AuthButton disabled={isLoading} onClick={login} text="Get Started" />
+          <AuthButton loading={isLoading} onClick={login} text="Get Started" />
         </div>
 
         {/* FACEBOOK AND GOOGLE AUTH  */}
         <div className=" grid gap-4">
           <div className="relative flex items-center justify-center ">
             <Button
-              onClick={() => signIn('google')}
+              onClick={() => signIn("google")}
               size="md"
               className="border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center gap-4"
             >
@@ -113,7 +98,7 @@ export default function SignIn() {
           </div>
           <div className="relative flex items-center justify-center ">
             <Button
-              onClick={() => signIn('facebook')}
+              onClick={() => signIn("facebook")}
               size="md"
               className=" border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center gap-4"
             >
