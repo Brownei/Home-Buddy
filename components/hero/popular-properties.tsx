@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Heart } from "iconsax-react";
 import { Button } from "@mantine/core";
 
-const featuredProperty = [
+const popularProperty = [
   {
     id: "1",
     icon: "/blueIvy.svg",
@@ -37,44 +37,11 @@ const featuredProperty = [
     baths: "2",
     park: "1",
   },
-  {
-    id: "4",
-    icon: "/greenville.svg",
-    alt: "Greenville Apartment",
-    price: "N450,000",
-    title: "Greenville Apartment",
-    address: "12, Adeniran Street, Ikoyi, Lagos",
-    bed: "3",
-    baths: "2",
-    park: "1",
-  },
-  {
-    id: "5",
-    icon: "/honey.svg",
-    alt: "Honey Apartment",
-    price: "N560,000",
-    title: "Honey Apartment",
-    address: "12, Adeniran Street, Ikoyi, Lagos",
-    bed: "2",
-    baths: "1",
-    park: "1",
-  },
-  {
-    id: "6",
-    icon: "/glorious.svg",
-    alt: "Glorious Apartment",
-    price: "N728,000",
-    title: "Blue Ivy Apartment",
-    address: "12, Adeniran Street, Ikoyi, Lagos",
-    bed: "2",
-    baths: "1",
-    park: "1",
-  },
 ];
-export default function FeaturedProperties() {
+export default function PopularProperties() {
   return (
-    <div className=" bg-[#F4F2FF] bg-no-repeat bg-cover ">
-      <div className=" max-w-[1440px] mx-auto  px-[clamp(24px,5vw,60px)]  py-[clamp(24px,6vw,64px)] ">
+    <div className=" ">
+      <div className=" max-w-[1440px] mx-auto  px-[clamp(24px,5vw,60px)]  py-[clamp(24px,6vw,64px)] bg-[rgba(128,114,207,0.20)] bg-no-repeat bg-center  ">
         <div className="text-center text-[#6E5DCF] grid gap-4">
           <h5 className="font-bold">FEATURED PROPERTIES DEALS</h5>
           <h2 className="text-[clamp(18px,1.5vw,24px)] font-bold">
@@ -82,7 +49,7 @@ export default function FeaturedProperties() {
           </h2>
         </div>
         <div className="flex flex-wrap  gap-5 justify-between mt-[clamp(40px,6vw,80px)]">
-          {featuredProperty.map((item) => (
+          {popularProperty.map((item) => (
             <div
               key={item.id}
               className="  w-[30%] clg:w-[45%] gcsm:w-full  p-[clamp(16px,1.5vw,24px)] flex gap-7 flex-col bg-white rounded-lg  "
@@ -104,7 +71,7 @@ export default function FeaturedProperties() {
                 </h4>
                 <div className="grid gap-4 ">
                   <div>
-                    <p className="text-[#272727] font-bold text-[clamp(18px,1.5vw,24px)]">
+                    <p className="text-[#272727] font-bold  text-[clamp(18px,1.5vw,24px)]">
                       {item.title}
                     </p>
                     <p className="text-[#828282] text-[clamp(14px,1vw,16px)]">

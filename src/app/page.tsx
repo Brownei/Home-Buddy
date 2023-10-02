@@ -3,6 +3,7 @@ import Brands from "@/components/hero/brands";
 import Choose from "@/components/hero/choose";
 import FeaturedProperties from "@/components/hero/featured-properties";
 import HeroSection from "@/components/hero/hero-section";
+import PopularProperties from "@/components/hero/popular-properties";
 import React from "react";
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
       <Brands />
       <Choose />
       <FeaturedProperties />
+      <PopularProperties />
     </>
   );
 }
