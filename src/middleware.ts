@@ -5,9 +5,7 @@ export async function middleware(req: NextRequest) {
     const token = req.cookies.get('jwt')?.value
 
     const verifiedToken = token && (
-        await verifyAuth(token).catch((err) => {
-            console.log(err)
-        })
+        await verifyAuth(token)
     )
 
     if(req.nextUrl.pathname.startsWith('/login') && !verifiedToken) {

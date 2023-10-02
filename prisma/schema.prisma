@@ -80,6 +80,9 @@ model Property {
   tours    Tour[]   @relation("PropertyToTour", fields: [tourId], references: [id])
   agentId  String   @db.ObjectId
   agent    User     @relation(fields: [agentId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Review {
@@ -90,6 +93,9 @@ model Review {
   user       User     @relation(fields: [userId], references: [id])
   propertyId String   @db.ObjectId
   property   Property @relation(fields: [propertyId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([propertyId])
   @@index([userId])
@@ -104,14 +110,14 @@ type Details {
 }
 
 type Features {
-  availability   Boolean
+  availability   Boolean @default(false)
   type           String
   cooling        String
   yearBuilt      Float
   location       String
-  parkingSpace   Boolean
+  parkingSpace   Boolean @default(false)
   size           Float
-  kitchenCabinet Boolean
+  kitchenCabinet Boolean @default(false)
 }
 
 model Tour {
@@ -120,4 +126,7 @@ model Tour {
   user       User       @relation("UserToTour", fields: [userId], references: [id])
   propertyId String[]   @db.ObjectId
   property   Property[] @relation("PropertyToTour", fields: [propertyId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
