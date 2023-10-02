@@ -5,39 +5,57 @@ import AuthButton from "../common/button";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useRef } from "react";
-import axios, { AxiosError } from "axios";
+import { useForm, yupResolver } from "@mantine/form";
+import { useMutation } from "@tanstack/react-query";
+import * as yup from "yup";
 import { useRouter } from "next/navigation";
+import { usePortal } from "@ibnlanre/portal";
+import { builder } from "@/client-api/builder";
+import { toast } from "react-toastify";
 
 export default function SignUp() {
-  const nameRef = useRef<HTMLInputElement>(null)
-  const emailRef = useRef<HTMLInputElement>(null)
-  const passwordRef = useRef<HTMLInputElement>(null)
-  const router = useRouter()
+  const { push } = useRouter();
 
-  async function createAccount() {
-    const name = nameRef.current?.value
-    const email = emailRef.current?.value
-    const password = passwordRef.current?.value
+  const schema = yup.object().shape({
+    fullName: yup.string().min(2, "Name should have at least 2 characters"),
+    email: yup.string().email("Invalid email").required("email is required"),
+    password: yup
+      .string()
+      .matches(
+        /^[a-zA-Z0-9]+$/,
+        "Password must contain text and number characters"
+      )
+      .min(6, "Password must be at least 6 characters long")
+      .required("Password is required"),
+  });
 
-    try {
-      const response = await axios.post('/api/auth/client', {
-        fullName: name,
-        email,
-        password
-      });
-  
-      if (response.data) {
-        console.log(response.data)
-        router.push("/login");
-      }
-    } catch (error) {
-      console.log(error)
-      if(error instanceof AxiosError) {
-        console.log(error.response?.data)
-      }
-    }
-  }
+  const [, setCookieState] = usePortal.cookie("sh_auth", {
+    value: "",
+    path: "/",
+    secure: true,
+  });
+  const myForm = useForm({
+    initialValues: {
+      email: "",
+      fullName: "",
+      password: "",
+    },
+    validate: yupResolver(schema),
+  });
+
+  const { mutate, isLoading } = useMutation({
+    mutationFn: async () => await builder.use().api.auth.sign_up(myForm.values),
+    mutationKey: builder.api.auth.sign_up.get(),
+    onSuccess(data) {
+      setCookieState(JSON.stringify(data.data));
+      myForm.reset();
+      toast.success("Account successfuly created", { autoClose: 2000 });
+      push("/login");
+    },
+    onError() {
+      console.log("error");
+    },
+  });
 
   return (
     <>
@@ -52,9 +70,14 @@ export default function SignUp() {
         </div>
 
         {/* USER SIGNUP FORMS  */}
-        <div className="w-full mt-10 grid gap-4">
+        <form
+          className="w-full mt-10 grid gap-4"
+          onSubmit={myForm.onSubmit(() => {
+            mutate();
+          })}
+        >
           <TextInput
-            ref={nameRef}
+            {...myForm.getInputProps("fullName")}
             label="Full Name"
             placeholder="Enter your full name"
             size="md"
@@ -73,7 +96,7 @@ export default function SignUp() {
             }}
           />
           <TextInput
-            ref={emailRef}
+            {...myForm.getInputProps("email")}
             label="Email"
             placeholder="Enter your email"
             size="md"
@@ -91,7 +114,7 @@ export default function SignUp() {
             }}
           />
           <PasswordInput
-            ref={passwordRef}
+            {...myForm.getInputProps("password")}
             label="Password"
             placeholder="Enter your password"
             size="md"
@@ -100,8 +123,8 @@ export default function SignUp() {
               label: { marginBlockEnd: "4px" },
             }}
           />
-          <AuthButton onClick={createAccount} text="Get Started" />
-        </div>
+          <AuthButton loading={isLoading} type="submit" text="Get Started" />
+        </form>
 
         {/* GOOGLE AND FACEBOOK AUTH  */}
         <div className=" grid gap-4">
