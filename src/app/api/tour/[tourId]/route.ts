@@ -2,28 +2,17 @@ import redisClient from "@/lib/redis";
 import { NextApiRequest, NextApiResponse } from "next";
 import logger from "@/lib/logger";
 import { connectToDB } from "@/lib/database";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]/authOptions";
 import { Features } from "@prisma/client";
+import { verifyAuth } from "@/lib/verifyAuth";
 
 export async function GET(req: NextApiRequest, { params }: { params: { tourId: string } }) {
     const id = params.tourId
-    const redisKey = `tour-${id}`
     let result;
 
     try {
-        if(redisClient) {
-            logger.info('Cache Hit!');
-            const cachedResults = await redisClient.get(redisKey);
-            
-            if(cachedResults) {
-                result = JSON.parse(cachedResults);
-            } 
-        }
-
-        logger.info('Cache Miss!');
         await connectToDB()
         const tour = await prisma.tour.findUnique({
             where: {
@@ -36,11 +25,6 @@ export async function GET(req: NextApiRequest, { params }: { params: { tourId: s
         }
         result = tour
 
-        if(redisClient) {
-            logger.info('Tours are cached!');
-            await redisClient.set(redisKey, JSON.stringify(result),  "EX", 60 * 60 * 2);
-        }
-
         return NextResponse.json(result)
     } catch (error) {
         logger.error(error)
@@ -49,19 +33,20 @@ export async function GET(req: NextApiRequest, { params }: { params: { tourId: s
     }
 }
 
-export async function PATCH(req: NextApiRequest, { params }: { params: { laptopId: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: { laptopId: string } }) {
     await connectToDB()
-    const session = await getServerSession(authOptions)
+    const token = req.cookies.get('jwt')?.value
+    const userDetails = await verifyAuth(token!)
     const id = params.laptopId
-    const {name, about, location, features, price, images} = req.body
+    const {name, about, location, features, price, images} =  await req.json()
 
-    if (!session) {
+    if (!userDetails || !token) {
         return NextResponse.json({ message: "You must be logged in." }, { status: 401});
     }
     
     const owner = await prisma.user.findUnique({
         where: {
-            email: session.user.email!
+            email: userDetails.email as string
         }
     })
 
@@ -106,18 +91,19 @@ export async function PATCH(req: NextApiRequest, { params }: { params: { laptopI
 }
 
 
-export async function DELETE(req: NextApiRequest, { params }: { params: { propertyId: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: { propertyId: string } }) {
     await connectToDB()
-    const session = await getServerSession(authOptions)
+    const token = req.cookies.get('jwt')?.value
+    const userDetails = await verifyAuth(token!)
     const id = params.propertyId
 
-    if (!session) {
+    if (!userDetails || !token) {
         return NextResponse.json({ message: "You must be logged in." }, { status: 401});
     }
     
     const owner = await prisma.user.findUnique({
         where: {
-            email: session.user.email!
+            email: userDetails.email as string
         }
     })
 

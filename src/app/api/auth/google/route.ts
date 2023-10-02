@@ -1,6 +1,6 @@
 import {LoginTicket, OAuth2Client, TokenPayload} from 'google-auth-library'
 import { NextRequest, NextResponse } from 'next/server';
-import { VerifyObjectTypes } from '@/interfaces/google';
+import { VerifyObjectTypes } from '@/interfaces/auth';
 const controller = require('./controller');
 
 const clientId = process.env.GOOGLE_CLIENT_ID as string;
