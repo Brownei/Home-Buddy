@@ -3,34 +3,18 @@ import redisClient from "@/lib/redis";
 import { connectToDB } from "@/lib/database";
 import logger from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/authOptions";
+import { verifyAuth } from "@/lib/verifyAuth";
 
 
 export async function GET(req: NextApiRequest, res: NextApiResponse) {
-    const redisKey = 'review'
     let results;
 
     try {
-        if(redisClient) {
-            logger.info('Cache Hit!');
-            const cachedResults = await redisClient.get(redisKey);
-            
-            if(cachedResults) {
-                results = JSON.parse(cachedResults);
-            } 
-        }
-
-        logger.info('Cache Miss!');
         await connectToDB()
         const reviews = await prisma.review.findMany()
         results = reviews
-
-        if(redisClient) {
-            logger.info('Reviews are cached!');
-            await redisClient.set(redisKey, JSON.stringify(results),  "EX", 60 * 60 * 2);
-        }
 
         return NextResponse.json(results)
     } catch (error) {
@@ -41,26 +25,32 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
 }
 
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(req: NextRequest, res: NextApiResponse) {
     await connectToDB()
-    const session = await getServerSession(authOptions)
-    const {stars, experience, propertyId} = req.body
+    const token = req.cookies.get('jwt')?.value
+    const userDetails = await verifyAuth(token!)
+    const {stars, experience, propertyId} = await req.json()
+
+    if(!stars || !experience || !propertyId) {
+        return NextResponse.json({ message: "Missing Information." }, { status: 404});
+    }
     
-    if (!session) {
+    if (!userDetails || !token) {
         return NextResponse.json({ message: "You must be logged in." }, { status: 401});
     }
     
-    const owner = await prisma.user.findUnique({
-        where: {
-            email: session.user.email!
-        }
-    })
-
-    if(owner?.role === 'AGENT') {
-        return NextResponse.json({ message: "You cannot give a review for your property yourself!" }, { status: 401});
-    }
-
+    
     try {
+        const owner = await prisma.user.findUnique({
+            where: {
+                email: userDetails.email as string
+            }
+        })
+    
+        if(owner?.role === 'AGENT') {
+            return NextResponse.json({ message: "You cannot give a review for your property yourself!" }, { status: 401});
+        }
+
         const existingReview = await prisma.review.findFirst({
             where: {
                 userId: owner!.id,

@@ -1,6 +1,7 @@
-import { JWTPayload, jwtVerify } from "jose"
+import { AuthPayload } from "@/interfaces/auth";
+import { jwtVerify } from "jose"
 
-function getJwtSecretKey() {
+export function getJwtSecretKey() {
     const secret = process.env.JWT_SECRET as string
     if(!secret || secret.length === 0) {
         throw new Error('JWT secret key is missing!')
@@ -11,7 +12,8 @@ function getJwtSecretKey() {
 export const verifyAuth = async (token: string) => {
     try {
         const verified = await jwtVerify(token, new TextEncoder().encode(getJwtSecretKey()))
-        return verified.payload as JWTPayload
+        console.log(verified.payload)
+        return verified.payload as AuthPayload
     } catch (error) {
         throw new Error('Your token has expired!')
     }

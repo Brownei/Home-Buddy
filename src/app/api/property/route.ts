@@ -3,35 +3,19 @@ import redisClient from "@/lib/redis";
 import { connectToDB } from "@/lib/database";
 import logger from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/authOptions";
+import { NextRequest, NextResponse } from "next/server";
 import { Features, Review } from "@prisma/client";
-
+import { jwtVerify } from "jose";
+import { getJwtSecretKey, verifyAuth } from "@/lib/verifyAuth";
+import { AuthPayload } from "@/interfaces/auth";
 
 export async function GET(req: NextApiRequest, res: NextApiResponse) {
-    const redisKey = 'property'
     let results;
 
     try {
-        if(redisClient) {
-            logger.info('Cache Hit!');
-            const cachedResults = await redisClient.get(redisKey);
-            
-            if(cachedResults) {
-                results = JSON.parse(cachedResults);
-            } 
-        }
-
-        logger.info('Cache Miss!');
         await connectToDB()
         const properties = await prisma.property.findMany()
         results = properties
-
-        if(redisClient) {
-            logger.info('Properties are cached!');
-            await redisClient.set(redisKey, JSON.stringify(results),  "EX", 60 * 60 * 2);
-        }
 
         return NextResponse.json(results)
     } catch (error) {
@@ -42,26 +26,37 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
 }
 
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(req: NextRequest, res: NextResponse) {
     await connectToDB()
-    const session = await getServerSession(authOptions)
-    const {name, about, location, features, price, images} = req.body
+
+    const token = req.cookies.get('jwt')?.value
+    const userDetails = await verifyAuth(token!)
+    const {name, about, location, price, images, availability, type, cooling, yearBuilt, street, parkingSpace, size, kitchenCabinet} = await req.json()
     
-    if (!session) {
+    if (!userDetails  || !token) {
         return NextResponse.json({ message: "You must be logged in." }, { status: 401});
     }
-    
-    const owner = await prisma.user.findUnique({
-        where: {
-            email: session.user.email!
-        }
-    })
 
-    if(owner?.role === 'CLIENT') {
-        return NextResponse.json({ message: "Only an agent can create a new property!" }, { status: 401});
+    if(!name || !about || !location || !price || !images ||!type || !size || !cooling || !yearBuilt || !street) {
+        return NextResponse.json({ message: "Information Missing!" }, { status: 404});
     }
 
     try {
+        const owner = await prisma.user.findUnique({
+            where: {
+                email: userDetails.email as string
+            }
+        })
+
+        if(!owner) {
+            return NextResponse.json({ message: "Not a user please register!" }, { status: 401});
+        }
+    
+        if(owner?.role === 'CLIENT') {
+            return NextResponse.json({ message: "Only an agent can create a new property!" }, { status: 401});
+        }
+
+        const agentId = owner.id
         const existingProperty = await prisma.property.findUnique({
             where: {
                 agentId: owner!.id,
@@ -78,10 +73,23 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
                 name: name as string,
                 about: about as string,
                 location: location as string,
-                features: features as Features,
+                features: {
+                    availability: availability as boolean,
+                    type: type as string,
+                    cooling: cooling as string,
+                    location: street as string,
+                    parkingSpace: parkingSpace as boolean,
+                    size: size as number,
+                    kitchenCabinet: kitchenCabinet as boolean,
+                    yearBuilt: yearBuilt as number
+                },
                 price: price as number,
                 images: images.map((i: string) => (i)),
-                agentId: owner!.id
+                agent: {
+                    connect: {
+                        id: agentId
+                    }
+                }
             }
         })
         logger.info('New property created!')

@@ -127,7 +127,7 @@ export default function SignUp() {
         </form>
 
         {/* GOOGLE AND FACEBOOK AUTH  */}
-        <div className=" grid gap-4">
+        <div className=" grid gap-4 mt-4">
           <div className="relative flex items-center justify-center ">
             <Button
               onClick={() => signIn("google")}
@@ -140,6 +140,7 @@ export default function SignUp() {
                   alt="GOOGLE"
                   width={27}
                   height={27}
+                  className="me-1"
                 />
               </span>
               Sign up with Google
@@ -149,10 +150,16 @@ export default function SignUp() {
             <Button
               onClick={() => signIn("facebook")}
               size="md"
-              className=" border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] font-semibold px-6 flex w-full justify-center items-center text-center gap-4"
+              className=" border border-[#E0E0E0] bg-white hover:bg-white text-[#4F4F4F] text-[clamp(14px,1vw,16px)] font-semibold px-6 flex w-full justify-center items-center text-center gap-4"
             >
               <span>
-                <Image src={"/fb.svg"} alt="FACEBOOK" width={27} height={27} />
+                <Image
+                  src={"/fb.svg"}
+                  alt="FACEBOOK"
+                  className="me-1"
+                  width={27}
+                  height={27}
+                />
               </span>
               Sign up with Facebook
             </Button>
