@@ -44,13 +44,18 @@ export default function SignUp() {
   });
 
   const { mutate, isLoading } = useMutation({
-    mutationFn: async () => await builder.use().api.auth.sign_up(myForm.values),
+    mutationFn: async () => await builder.use().api.auth.sign_up({
+      email: myForm.values.email,
+      password: myForm.values.password,
+      fullName: myForm.values.fullName
+    }),
     mutationKey: builder.api.auth.sign_up.get(),
     onSuccess(data) {
-      setCookieState(JSON.stringify(data.data));
+      console.log(data)
+      // setCookieState(JSON.stringify());
       myForm.reset();
       toast.success("Account successfuly created", { autoClose: 2000 });
-      push("/login");
+      // push("/login");
     },
     onError() {
       console.log("error");
