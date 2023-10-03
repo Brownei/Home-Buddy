@@ -44,11 +44,7 @@ export default function SignUp() {
   });
 
   const { mutate, isLoading } = useMutation({
-    mutationFn: async () => await builder.use().api.auth.sign_up({
-      email: myForm.values.email,
-      password: myForm.values.password,
-      fullName: myForm.values.fullName
-    }),
+    mutationFn: async () => await builder.use().api.auth.sign_up(myForm.values),
     mutationKey: builder.api.auth.sign_up.get(),
     onSuccess(data) {
       console.log(data)
