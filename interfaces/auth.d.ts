@@ -14,3 +14,13 @@ declare interface AuthPayload extends JWTPayload {
     image: string;
     role: Roles
 }
+
+declare type User = {
+    id: string;
+    name: string;
+    email: string;
+    phoneNumber: string;
+    emailVerified: Date;
+    image: string;
+    role: Roles
+}
