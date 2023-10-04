@@ -41,11 +41,14 @@ const popularProperty = [
 export default function PopularProperties() {
   return (
     <div className=" ">
-      <div className=" max-w-[1440px] mx-auto  px-[clamp(24px,5vw,60px)]  py-[clamp(24px,6vw,64px)] bg-[rgba(128,114,207,0.20)] bg-no-repeat bg-center  ">
-        <div className="text-center text-[#6E5DCF] grid gap-4">
-          <h5 className="font-bold">FEATURED PROPERTIES DEALS</h5>
-          <h2 className="text-[clamp(18px,1.5vw,24px)] font-bold">
-            We have properties for sale in different locations
+      <div className=" max-w-[1440px] flex flex-col items-center justify-center mx-auto  px-[clamp(24px,5vw,60px)]  py-[clamp(24px,6vw,64px)] relative">
+        <div className="bg-[rgba(128,114,207,0.20)] blur-[140px] bg-no-repeat bg-center h-full w-4/5 flex items-center justify-center  absolute -z-10"></div>
+        <div className="text-center  grid gap-4">
+          <h5 className="font-bold text-[#6E5DCF] text-[clamp(24px,4vw,48px)]">
+            FEATURED PROPERTIES DEALS
+          </h5>
+          <h2 className="text-[clamp(18px,2vw,32px)] font-bold">
+            We Have The Most Searched Properties
           </h2>
         </div>
         <div className="flex flex-wrap  gap-5 justify-between mt-[clamp(40px,6vw,80px)]">
@@ -66,12 +69,12 @@ export default function PopularProperties() {
                 />
               </div>
               <div>
-                <h4 className="text-[#6E5DCF] text-[clamp(24px,2vw,32px)] font-bold">
+                <h4 className="text-[#6E5DCF] text-[clamp(20px,2vw,32px)] font-bold">
                   {item.price}
                 </h4>
                 <div className="grid gap-4 ">
                   <div>
-                    <p className="text-[#272727] font-bold  text-[clamp(18px,1.5vw,24px)]">
+                    <p className="text-[#272727] font-bold  text-[clamp(16px,1.5vw,24px)]">
                       {item.title}
                     </p>
                     <p className="text-[#828282] text-[clamp(14px,1vw,16px)]">

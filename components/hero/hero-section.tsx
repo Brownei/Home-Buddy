@@ -61,7 +61,10 @@ export default function HeroSection() {
           {/* hero filter section  */}
           <div className="mt-[clamp(16px,2vw,32px)] gap-4 flex-wrap flex ">
             {filterItem.map((item) => (
-              <div className="bg-gray-100 p-4 min-w-[200px] gsm:w-full  w-[25%]" key={item.id}>
+              <div
+                className="bg-gray-100 p-4 min-w-[200px] gsm:w-full  w-[25%]"
+                key={item.id}
+              >
                 <Select
                   label={item.title}
                   placeholder={item.id}
@@ -93,7 +96,7 @@ export default function HeroSection() {
             </div>
           </div>
           {/* hero stat  */}
-          <div className="flex gap-[clamp(1rem,4vw,4rem)]  mt-8 md:bg-white rounded-2xl px-2 py-3 ">
+          <div className="flex gap-[clamp(1rem,4vw,4rem)]  mt-8 md:bg-white md:max-w-max gsm:max-w-full gsm:justify-between rounded-2xl px-4 py-3 ">
             {heroStat.map((item) => (
               <div
                 key={item.id}
