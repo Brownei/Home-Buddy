@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { compare } from "bcrypt-ts";
 import logger from "@/lib/logger";
 import { SignJWT } from "jose";
-
+import { User } from "@/interfaces/auth";
 
 export async function POST(req: NextRequest, res: NextResponse) {
     const {email, password} = await req.json()
@@ -32,7 +32,15 @@ export async function POST(req: NextRequest, res: NextResponse) {
         }
         const token = await new SignJWT(foundUser).setProtectedHeader({ alg }).setExpirationTime("24h").sign(signature)
     
-        const response =  NextResponse.json({foundUser}, {status: 200});
+        const response =  NextResponse.json<User>({
+            id: foundUser.id,
+            name: foundUser.name!,
+            email: foundUser.email!,
+            role: foundUser.role,
+            phoneNumber: foundUser.phoneNumber!,
+            image: foundUser.image!,
+            emailVerified: foundUser.emailVerified!
+        }, {status: 200});
 
         response.cookies.set({
             name: 'jwt', 
