@@ -5,10 +5,10 @@ import axios from "axios";
 export const builder = createBuilder({
   api: {
     auth: {
-      sign_up: (data: Record<"fullName" | "email" | "password", string>) =>
-        axios.post("/api/auth/client"),
-      login: (data: Record<"email" | "password", string>) =>
-        axios.post("/api/auth/login"),
+      sign_up: async (data: Record<"fullName" | "email" | "password", string>) =>
+        await axios.post("/api/auth/client", data),
+      login: async (data: Record<"email" | "password", string>) =>
+        await axios.post("/api/auth/login", data),
     },
   },
 });

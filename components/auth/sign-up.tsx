@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { usePortal } from "@ibnlanre/portal";
 import { builder } from "@/client-api/builder";
 import { toast } from "react-toastify";
+import { AxiosError } from "axios";
 
 export default function SignUp() {
   const { push } = useRouter();
@@ -44,16 +45,24 @@ export default function SignUp() {
   });
 
   const { mutate, isLoading } = useMutation({
-    mutationFn: async () => await builder.use().api.auth.sign_up(myForm.values),
+    mutationFn: async () => await builder.use().api.auth.sign_up({
+      email: myForm.values.email,
+      password: myForm.values.password,
+      fullName: myForm.values.fullName
+    }),
     mutationKey: builder.api.auth.sign_up.get(),
     onSuccess(data) {
-      setCookieState(JSON.stringify(data.data));
+      console.log(data)
+      // setCookieState(JSON.stringify());
       myForm.reset();
       toast.success("Account successfuly created", { autoClose: 2000 });
       push("/login");
     },
-    onError() {
-      console.log("error");
+    onError(error: unknown) {
+      console.log(error);
+      if(error instanceof AxiosError) {
+        console.log(error)
+      }
     },
   });
 

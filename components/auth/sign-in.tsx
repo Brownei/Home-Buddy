@@ -39,7 +39,6 @@ export default function SignIn() {
         {/* USER LOGIN FORM  */}
         <div className="w-full mt-10 grid gap-4">
           <TextInput
-            ref={emailRef}
             label="Email"
             placeholder="Enter your email"
             size="md"
@@ -57,7 +56,6 @@ export default function SignIn() {
             }}
           />
           <PasswordInput
-            ref={passwordRef}
             label="Password"
             placeholder="Enter your password"
             size="md"
@@ -74,7 +72,7 @@ export default function SignIn() {
               },
             }}
           />
-          <AuthButton loading={isLoading} onClick={login} text="Get Started" />
+          <AuthButton loading={false} text="Get Started" />
         </div>
 
         {/* FACEBOOK AND GOOGLE AUTH  */}
