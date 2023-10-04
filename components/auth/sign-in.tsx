@@ -11,21 +11,30 @@ import * as yup from "yup";
 import { useRouter } from "next/navigation";
 import { builder } from "@/client-api/builder";
 import { AxiosError } from "axios";
+import { cookieStorage, usePortal } from "@ibnlanre/portal";
+import { toast } from "react-toastify";
+
+const schema = yup.object().shape({
+  email: yup.string().email("Invalid email").required("email is required"),
+  password: yup
+    .string()
+    .matches(
+      /^[a-zA-Z0-9]+$/,
+      "Password must contain text and number characters"
+    )
+    .min(6, "Password must be at least 6 characters long")
+    .required("Password is required"),
+});
 
 export default function SignIn() {
-  const { push } = useRouter();
-
-  const schema = yup.object().shape({
-    email: yup.string().email("Invalid email").required("email is required"),
-    password: yup
-      .string()
-      .matches(
-        /^[a-zA-Z0-9]+$/,
-        "Password must contain text and number characters"
-      )
-      .min(6, "Password must be at least 6 characters long")
-      .required("Password is required"),
+  const [, setUserInfo] = usePortal.cookie("hb_auth", {
+    value: "",
+    path: "/",
+    secure: true,
+    httpOnly: true,
+    sameSite: "strict",
   });
+  const { push } = useRouter();
 
   const loginForm = useForm({
     initialValues: {
@@ -40,7 +49,10 @@ export default function SignIn() {
       await builder.use().api.auth.login(loginForm.values),
     mutationKey: builder.api.auth.login.get(),
     onSuccess(data) {
+      setUserInfo(JSON.stringify(data));
+      cookieStorage.setItem("hb_auth", JSON.stringify(data));
       loginForm.reset();
+      toast.success("Welcome", { autoClose: 2000 });
       push("/");
     },
     onError(error) {

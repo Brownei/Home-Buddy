@@ -48,14 +48,15 @@ export default function SignUp() {
     mutationKey: builder.api.auth.sign_up.get(),
     onSuccess(data) {
       console.log(data);
+      // setCookieState(JSON.stringify());
       myForm.reset();
       toast.success("Account successfuly created", { autoClose: 2000 });
       push("/login");
     },
-    onError(error) {
+    onError(error: unknown) {
       console.log(error);
       if (error instanceof AxiosError) {
-        console.log(error.response?.data);
+        console.log(error);
       }
     },
   });
