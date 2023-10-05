@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.button-link {
+    box-sizing: border-box;
+    /* Include padding and border in the element's size */
+    border: 2px solid transparent;
+    /* Set a transparent border by default */
+    transition: border-color 0.3s;
+    /* Add a smooth transition for the border color */
+}
+
+/* Define the hover effect */
+.button-link:hover {
+    border-color: #433788;
+    /* Change the border color on hover */
+}

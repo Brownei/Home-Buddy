@@ -1,6 +1,9 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import CustomProvider from "./provider";
+import { MantineProvider } from "@mantine/core";
+import { PiCaretDownBold } from "react-icons/pi";
+import MantineProv from "./mantine-provider";
 
 export const metadata: Metadata = {
   title: "Home Buddy",
@@ -16,7 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <CustomProvider>{children}</CustomProvider>
+        <CustomProvider>
+          <MantineProv>
+            <div>{children}</div>
+          </MantineProv>
+        </CustomProvider>
       </body>
     </html>
   );
