@@ -7,8 +7,6 @@ import { User } from "@/interfaces/auth";
 
 export async function POST(req: NextRequest, res: NextResponse) {
     const {email, password} = await req.json()
-    const alg = "HS256"
-    const signature = new TextEncoder().encode(process.env.JWT_SECRET);
 
     try {
         if (!email || !password) {
@@ -30,9 +28,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
         if (!match) {
             return NextResponse.json({ message: 'Password incorrect!' }, {status: 409})
         }
-        const token = await new SignJWT(foundUser).setProtectedHeader({ alg }).setExpirationTime("24h").sign(signature)
     
-        const response =  NextResponse.json<User>({
+        return NextResponse.json<User>({
             id: foundUser.id,
             name: foundUser.name!,
             email: foundUser.email!,
@@ -41,15 +38,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
             image: foundUser.image!,
             emailVerified: foundUser.emailVerified!
         }, {status: 200});
-
-        response.cookies.set({
-            name: 'jwt', 
-            value: token,
-            maxAge: 60 * 60 * 24,
-            httpOnly: true
-        });
-
-        return response;
+        
     } catch (error) {
         console.log(error)
         logger.info(error)
