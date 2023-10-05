@@ -76,8 +76,10 @@ export default function FeaturedProperties() {
     <div className=" bg-[#F4F2FF] bg-no-repeat bg-cover ">
       <div className=" max-w-[1440px] mx-auto  px-[clamp(24px,5vw,60px)]  py-[clamp(24px,6vw,64px)] ">
         <div className="text-center text-[#6E5DCF] grid gap-4">
-          <h5 className="font-bold">FEATURED PROPERTIES DEALS</h5>
-          <h2 className="text-[clamp(18px,1.5vw,24px)] font-bold">
+          <h5 className="font-bold text-[clamp(24px,4vw,48px)]">
+            FEATURED PROPERTIES DEALS
+          </h5>
+          <h2 className="text-[clamp(18px,2vw,32px)] font-bold">
             We have properties for sale in different locations
           </h2>
         </div>
@@ -99,12 +101,12 @@ export default function FeaturedProperties() {
                 />
               </div>
               <div>
-                <h4 className="text-[#6E5DCF] text-[clamp(24px,2vw,32px)] font-bold">
+                <h4 className="text-[#6E5DCF] text-[clamp(20px,2vw,32px)] font-bold">
                   {item.price}
                 </h4>
                 <div className="grid gap-4 ">
                   <div>
-                    <p className="text-[#272727] font-bold text-[clamp(18px,1.5vw,24px)]">
+                    <p className="text-[#272727] font-bold text-[clamp(16px,1.5vw,24px)]">
                       {item.title}
                     </p>
                     <p className="text-[#828282] text-[clamp(14px,1vw,16px)]">
