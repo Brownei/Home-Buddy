@@ -103,16 +103,16 @@ const footerLegal = [
     text: "Copyrights",
     link: "#",
   },
-  {
-    id: 3,
-    text: "Contact Us",
-    link: "#",
-  },
-  {
-    id: 4,
-    text: "Blogs",
-    link: "#",
-  },
+  // {
+  //   id: 3,
+  //   text: "Contact Us",
+  //   link: "#",
+  // },
+  // {
+  //   id: 4,
+  //   text: "Blogs",
+  //   link: "#",
+  // },
 ];
 
 export default function Footer() {
@@ -148,7 +148,7 @@ export default function Footer() {
             </div>
           </div>
           {/* <div className="text-white flex flex-row-reverse gap-6 flex-1  justify-between"> */}
-          <ul className="grid gap-4 text-white ">
+          <ul className="flex flex-col gap-4 text-white ">
             <h3 className="font-semibold text-[clamp(16px)] ">About Us</h3>
             {footerAboutUs.map((item) => (
               <Link href={item.link}>
@@ -156,7 +156,7 @@ export default function Footer() {
               </Link>
             ))}
           </ul>
-          <ul className="grid gap-4 text-white">
+          <ul className="flex flex-col gap-4 text-white">
             <h3 className="font-semibold text-[clamp(16px)]">Help</h3>
             {footerHelp.map((item) => (
               <Link href={item.link}>
@@ -164,7 +164,7 @@ export default function Footer() {
               </Link>
             ))}
           </ul>
-          <ul className="grid gap-4 text-white">
+          <ul className="flex flex-col gap-4 text-white">
             <h3 className="font-semibold text-[clamp(16px)]">Legal</h3>
             {footerLegal.map((item) => (
               <Link href={item.link}>

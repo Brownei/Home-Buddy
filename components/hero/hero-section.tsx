@@ -43,7 +43,7 @@ const heroStat = [
 export default function HeroSection() {
   return (
     <>
-      <div className="  bg-[url('/herobg.svg')] min-h-max bg-no-repeat bg-contain md:bg-cover  bg-right-top px-[clamp(24px,5vw,60px)] py-6  max-w-[1440px] mx-auto">
+      <div className="  bg-[url('/herobg.svg')] min-h-max bg-no-repeat bg-contain md:bg-cover  bg-right-top px-[clamp(24px,5vw,60px)] py-[clamp(,1.3vw,20px)]  max-w-[1440px] mx-auto">
         {/* <div className=""> */}
         <div className="w-[60%] clg:w-[80%] gsm:w-full  ">
           {/* hero heading  */}
