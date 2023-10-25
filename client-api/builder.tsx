@@ -10,6 +10,8 @@ export const builder = createBuilder({
       ) => await axios.post("/api/auth/client", data),
       login: (data: Record<"email" | "password", string>) =>
         axios.post("/api/auth/login", data),
+      forgot_password: (data: Record<"email", string>) =>
+        axios.post("/api/auth/forgotpassword", data),
     },
   },
 });
